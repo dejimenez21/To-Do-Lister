@@ -59,3 +59,5 @@ C:\Users\dejim\OneDrive\Documents\INTEC\Desarrollo web\PracticaFinal\TodoLister\
 C:\Users\dejim\OneDrive\Documents\INTEC\Desarrollo web\PracticaFinal\TodoLister\obj\Debug\netcoreapp3.1\TodoList.dll
 C:\Users\dejim\OneDrive\Documents\INTEC\Desarrollo web\PracticaFinal\TodoLister\obj\Debug\netcoreapp3.1\TodoList.pdb
 C:\Users\dejim\OneDrive\Documents\INTEC\Desarrollo web\PracticaFinal\TodoLister\obj\Debug\netcoreapp3.1\TodoList.genruntimeconfig.cache
+C:\Users\dejim\OneDrive\Documents\INTEC\Desarrollo web\PracticaFinal\TodoLister\bin\Debug\netcoreapp3.1\AutoMapper.dll
+C:\Users\dejim\OneDrive\Documents\INTEC\Desarrollo web\PracticaFinal\TodoLister\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

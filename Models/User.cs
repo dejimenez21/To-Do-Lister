@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ToDoLister.Models
@@ -9,6 +10,12 @@ namespace ToDoLister.Models
 
         [Required]
         [MaxLength(20)]
-        public string Handle { get; set; }
+        public string Email { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string Password { get; set; }
+
+        public ICollection<Item> Items { get; set; }
     }
 }

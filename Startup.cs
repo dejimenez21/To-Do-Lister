@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ToDoLister.Models;
+using ToDoLister.Data;
+using AutoMapper;
 
 namespace ToDoLister
 {
@@ -31,6 +33,10 @@ namespace ToDoLister
             // using Microsoft.EntityFrameworkCore;
             services.AddDbContext<ToDoListerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IListerRepository, ToDoListerRepo>();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
         }
 

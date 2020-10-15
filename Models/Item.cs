@@ -10,10 +10,12 @@ namespace ToDoLister.Models
 
         [Required]
         [MaxLength(150)]
+        public string TaskName { get; set; }
+
+        [MaxLength(500)]
         public string Description { get; set; }
 
         [Required]
-        [MaxLength(20)]
         public User Owner { get; set; }
 
         [Required]

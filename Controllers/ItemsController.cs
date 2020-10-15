@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ToDoLister.Models;
+using ToDoLister.Data;
+using AutoMapper;
 
 namespace ToDoLister.Controllers
 {
@@ -11,51 +13,56 @@ namespace ToDoLister.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        public ItemsController()
+        private readonly IListerRepository _repo;
+        private readonly IMapper _mapper;
+
+        public ItemsController(IListerRepository repo, IMapper mapper)
         {
+            _repo = repo;
+            _mapper = mapper;
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<Item>>> GetItems()
+        public async Task<ActionResult<IEnumerable<Item>>> GetAllItems()
         {
-            
-            await Task.Yield();
-
-            return new List<Item> { };
+            var items = await _repo.GetAllItemsAsync();
+            return Ok(items);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Item>> GetItemById(int id)
         {
-            
-            await Task.Yield();
-
-            return null;
+            var item = await _repo.GetItemByIdAsync(id);
+            if(item != null)
+                return Ok(item);
+            else
+                return NotFound();
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<Item>> PostItem(Item model)
+        public async Task<ActionResult<Item>> PostItem(Item item)
         {
-            await Task.Yield();
-
-            return null;
+           _repo.CreateEntity(item);
+           var saved = await _repo.SaveChangesAsync();
+           return Created("api/[controller]", item);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem(int id, Item model)
+        public async Task<IActionResult> PutItem(int id, Item item)
         {
-            await Task.Yield();
-
-            return NoContent();
+            _repo.UpdateEntity(item);
+            var saved = await _repo.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Item>> DeleteItemById(int id)
         {
+            var item = new Item{Id=id};
+            _repo.DeleteEntity(item);
+            var saved = await _repo.SaveChangesAsync();
+            return Ok();
             
-            await Task.Yield();
-
-            return null;
         }
     }
 }
