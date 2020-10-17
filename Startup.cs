@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using ToDoLister.Models;
 using ToDoLister.Data;
 using AutoMapper;
+using TodoLister.Helpers;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ToDoLister
 {
@@ -32,11 +34,15 @@ namespace ToDoLister
             services.AddControllers();
             // using Microsoft.EntityFrameworkCore;
             services.AddDbContext<ToDoListerContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                .EnableSensitiveDataLogging(true));
 
             services.AddScoped<IListerRepository, ToDoListerRepo>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuthentication", null);
             
         }
 
@@ -48,10 +54,12 @@ namespace ToDoLister
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

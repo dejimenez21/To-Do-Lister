@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TodoLister.Dtos;
+using ToDoLister.Dtos;
 using ToDoLister.Models;
 
 namespace ToDoLister.Data
@@ -17,11 +19,13 @@ namespace ToDoLister.Data
         // void DeleteItem(int id);
 
         //Items
-        Task<IEnumerable<Item>> GetAllItemsAsync();
+        Task<IEnumerable<Item>> GetAllItemsAsync(string email = null);
         Task<Item> GetItemByIdAsync(int id);
+        void CreateItem(Item item);
 
         //Users
-        
-        
+        Task<User> AuthenticateAsync(string email, string password);
+        Task<bool> UserExist(string email);
+        //Task<int> GetUserID(string email);
     }
 }

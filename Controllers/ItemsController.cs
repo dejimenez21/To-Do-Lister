@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoLister.Models;
 using ToDoLister.Data;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using TodoLister.Dtos;
+using System.Security.Claims;
 
 namespace ToDoLister.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ItemsController : ControllerBase
@@ -25,8 +29,10 @@ namespace ToDoLister.Controllers
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<Item>>> GetAllItems()
         {
-            var items = await _repo.GetAllItemsAsync();
-            return Ok(items);
+            
+            var items = await _repo.GetAllItemsAsync(User.Identity.Name);
+            var itemRead = items.Select(item=>_mapper.Map<ItemReadDto>(item));
+            return Ok(itemRead);
         }
 
         [HttpGet("{id}")]
@@ -34,17 +40,23 @@ namespace ToDoLister.Controllers
         {
             var item = await _repo.GetItemByIdAsync(id);
             if(item != null)
-                return Ok(item);
+            {
+                var itemRead = _mapper.Map<ItemReadDto>(item);
+                return Ok(itemRead);
+            }  
             else
                 return NotFound();
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<Item>> PostItem(Item item)
+        public async Task<ActionResult<Item>> CreateItem(ItemCreateDto itemCreate)
         {
-           _repo.CreateEntity(item);
-           var saved = await _repo.SaveChangesAsync();
-           return Created("api/[controller]", item);
+            var item = _mapper.Map<Item>(itemCreate);
+            item.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            _repo.CreateItem(item);
+            var saved = await _repo.SaveChangesAsync();
+            var itemRead = _mapper.Map<ItemReadDto>(item);
+            return Created("api/[controller]", itemRead);
         }
 
         [HttpPut("{id}")]
