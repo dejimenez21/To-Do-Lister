@@ -64,6 +64,7 @@ namespace ToDoLister.Controllers
         public async Task<IActionResult> PutItem(int id, ItemUpdateDto itemToUpdate)
         {
             var item = _mapper.Map<Item>(itemToUpdate);
+            item.Id = id;
             _repo.UpdateItem(item);
             var saved = await _repo.SaveChangesAsync();
             return NoContent();
