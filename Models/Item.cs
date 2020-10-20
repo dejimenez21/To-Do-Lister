@@ -28,6 +28,8 @@ namespace ToDoLister.Models
 
         [Required]
         public DateTime DueDate { get; set; }
+        
+        public DateTime LastModified { get; set; }
 
     }
 

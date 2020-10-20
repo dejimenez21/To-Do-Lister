@@ -23,7 +23,7 @@ namespace ToDoLister.Data
         Task<Item> GetItemByIdAsync(int id);
         void CreateItem(Item item);
         void UpdateItem(Item item);
-        Task DeleteItem(Item item);
+        void DeleteItem(Item item);
 
         //Users
         Task<User> AuthenticateAsync(string email, string password);

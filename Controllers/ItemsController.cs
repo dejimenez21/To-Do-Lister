@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using TodoLister.Dtos;
 using System.Security.Claims;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.Net.Http.Headers;
+using TodoLister.Helpers;
 
 namespace ToDoLister.Controllers
 {
@@ -28,6 +30,7 @@ namespace ToDoLister.Controllers
         }
 
         [HttpGet("")]
+        [HttpHead("")]
         public async Task<ActionResult<IEnumerable<Item>>> GetAllItems()
         {
             
@@ -37,16 +40,36 @@ namespace ToDoLister.Controllers
         }
 
         [HttpGet("{id}")]
+        [HttpHead("{id}")]
         public async Task<ActionResult<Item>> GetItemById(int id)
         {
             var item = await _repo.GetItemByIdAsync(id);
-            if(item != null)
+            if(item == null)
+            {   
+                return NotFound();
+            }
+            var etag = (new EtagManager()).GenerateEtag(item);
+            if (Request.Headers.Keys.Contains(HeaderNames.IfNoneMatch))
+            {
+                var incomingEtag = 
+                    Request.Headers[HeaderNames.IfNoneMatch]
+                        .ToString();
+                if(incomingEtag.Equals(etag))
+                {
+                    return StatusCode(304);
+                }
+            }  
+            
+            Response.Headers.Add(HeaderNames.ETag, etag);
+
+            if(Request.Method.Equals("GET"))
             {
                 var itemRead = _mapper.Map<ItemReadDto>(item);
                 return Ok(itemRead);
-            }  
+            }
             else
-                return NotFound();
+                return Ok();
+
         }
 
         [HttpPost("")]
@@ -78,7 +101,7 @@ namespace ToDoLister.Controllers
             if(itemToDelete==null)
                 return NotFound();
 
-            await _repo.DeleteItem(itemToDelete);
+            _repo.DeleteItem(itemToDelete);
             var saved = await _repo.SaveChangesAsync();
             return Ok();
             
@@ -106,5 +129,8 @@ namespace ToDoLister.Controllers
             return NoContent();
         }
 
+        
+
+       
     }
 }
