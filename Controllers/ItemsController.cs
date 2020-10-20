@@ -73,8 +73,12 @@ namespace ToDoLister.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Item>> DeleteItemById(int id)
         {
-            var item = new Item{Id=id};
-            _repo.DeleteEntity(item);
+            var itemToDelete = await _repo.GetItemByIdAsync(id);
+            
+            if(itemToDelete==null)
+                return NotFound();
+
+            await _repo.DeleteItem(itemToDelete);
             var saved = await _repo.SaveChangesAsync();
             return Ok();
             

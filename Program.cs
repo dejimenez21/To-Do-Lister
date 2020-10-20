@@ -26,8 +26,8 @@ namespace ToDoLister
                     .UseKestrel(options => 
                     {
                         options.Listen(IPAddress.Loopback, 5000, listenOptions => {
-                            listenOptions.Protocols = HttpProtocols.Http1;
-                            //listenOptions.UseHttps();
+                            listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                            listenOptions.UseHttps();
                         });
                     });
                     
