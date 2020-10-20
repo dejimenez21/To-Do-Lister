@@ -9,6 +9,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using TodoLister.Dtos;
 using System.Security.Claims;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace ToDoLister.Controllers
 {
@@ -60,11 +61,12 @@ namespace ToDoLister.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem(int id, Item item)
+        public async Task<IActionResult> PutItem(int id, ItemUpdateDto itemToUpdate)
         {
-            _repo.UpdateEntity(item);
+            var item = _mapper.Map<Item>(itemToUpdate);
+            _repo.UpdateItem(item);
             var saved = await _repo.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -76,5 +78,28 @@ namespace ToDoLister.Controllers
             return Ok();
             
         }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> PartialItemUpdate(int id, JsonPatchDocument<ItemUpdateDto> patchDoc)
+        {
+            var itemModelFromRepo = await _repo.GetItemByIdAsync(id);
+            if(itemModelFromRepo == null)
+                return NotFound(new {message="El item no existe"});
+
+            var itemToPatch = _mapper.Map<ItemUpdateDto>(itemModelFromRepo);
+            patchDoc.ApplyTo(itemToPatch, ModelState);
+
+            if(!TryValidateModel(itemToPatch))
+            {
+                return ValidationProblem();
+            }
+
+            _mapper.Map(itemToPatch, itemModelFromRepo);
+            _repo.UpdateItem(itemModelFromRepo);
+            await _repo.SaveChangesAsync();
+
+            return NoContent();
+        }
+
     }
 }

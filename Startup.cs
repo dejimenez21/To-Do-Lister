@@ -16,6 +16,8 @@ using ToDoLister.Data;
 using AutoMapper;
 using TodoLister.Helpers;
 using Microsoft.AspNetCore.Authentication;
+using Newtonsoft.Json.Serialization;
+
 
 namespace ToDoLister
 {
@@ -31,7 +33,9 @@ namespace ToDoLister
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(s=>{
+                s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
             // using Microsoft.EntityFrameworkCore;
             services.AddDbContext<ToDoListerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))

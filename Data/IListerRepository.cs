@@ -22,6 +22,7 @@ namespace ToDoLister.Data
         Task<IEnumerable<Item>> GetAllItemsAsync(string email = null);
         Task<Item> GetItemByIdAsync(int id);
         void CreateItem(Item item);
+        void UpdateItem(Item item);
 
         //Users
         Task<User> AuthenticateAsync(string email, string password);
