@@ -5462,11 +5462,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dejim\\OneDrive\\Documents\\INTEC\\Desarrollo web\\PracticaFinal\\TodoLister\\TodoList.csproj",
+      "projectUniqueName": "c:\\Users\\dejim\\OneDrive\\Documents\\INTEC\\Devops\\ToDoLister\\To-Do-Lister\\TodoList.csproj",
       "projectName": "TodoList",
-      "projectPath": "C:\\Users\\dejim\\OneDrive\\Documents\\INTEC\\Desarrollo web\\PracticaFinal\\TodoLister\\TodoList.csproj",
+      "projectPath": "c:\\Users\\dejim\\OneDrive\\Documents\\INTEC\\Devops\\ToDoLister\\To-Do-Lister\\TodoList.csproj",
       "packagesPath": "C:\\Users\\dejim\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dejim\\OneDrive\\Documents\\INTEC\\Desarrollo web\\PracticaFinal\\TodoLister\\obj\\",
+      "outputPath": "c:\\Users\\dejim\\OneDrive\\Documents\\INTEC\\Devops\\ToDoLister\\To-Do-Lister\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\dejim\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5538,7 +5538,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.409\\RuntimeIdentifierGraph.json"
       }
     }
   }
